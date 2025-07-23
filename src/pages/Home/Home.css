@@ -1,8 +1,20 @@
-.main{
-    padding: 11rem 3rem 2rem 1rem;
+.main {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* force exactly 4 in a row */
+  gap: 3rem;
+  padding: 11rem 2rem 2rem 2rem;
+  max-width: 1400px;         /* keeps layout centered and controlled */
+  margin: 0 auto;            /* centers the grid horizontally */
+  box-sizing: border-box;    /* includes padding in width */
 }
 
-.gap-larger{
-    gap:2rem;
+
+
+.gap-larger {
+  gap: 3rem;
 }
 
+.alert-text {
+  margin: 2rem 0;
+  text-align: center;
+}

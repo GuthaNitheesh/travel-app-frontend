@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
+import { CategoryProvider } from './context/category-context';
 import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+
   <React.StrictMode>
-    <App />
+    <CategoryProvider>
+<App />
+    </CategoryProvider>
+    
   </React.StrictMode>
 );
 
