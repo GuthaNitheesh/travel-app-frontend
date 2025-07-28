@@ -18,7 +18,8 @@ const {filterDispatch}=useFilter();
     useEffect(() => {
         (async () => {
             try {
-const { data } = await axios.get("https://travel-app-backend.onrender.com/api/category");
+const { data } = await axios.get("https://travel-app-backend-uyij.onrender.com/api/category");
+                console.log("done");
                   const categoriesToShow = data.slice(
         numberOfCategoryToShow+10>data.length?data.length-10:numberOfCategoryToShow,
         numberOfCategoryToShow >data.length?data.length:numberOfCategoryToShow+10

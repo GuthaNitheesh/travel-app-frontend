@@ -21,9 +21,8 @@ export const Payment = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get(
-           `https://travel-app-backend-uyij.onrender.com/api/hotels/${id}`
-        );
+       const { data } = await axios.get(`https://travel-app-backend-uyij.onrender.com/api/hotels/${id}`);
+
         setSingleHotel(data);
       } catch (err) {
         console.error("Failed to fetch hotel data", err);

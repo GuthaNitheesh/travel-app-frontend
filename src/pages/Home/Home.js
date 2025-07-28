@@ -21,8 +21,7 @@ const {isAuthModalOpen}=useAuth();
   useEffect(() => {
     (async () => {
       try {
-       const { data } = await axios.get(`https://travel-app-backend-uyij.onrender.com/api/hotels?category=${hotelCategory}`);
-
+const { data } = await axios.get(`https://travel-app-backend-uyij.onrender.com/api/hotels?category=${hotelCategory}`);
         console.log(data);
         setTestData(data);
         setHotels(data ? data.slice(0, 16) : []);

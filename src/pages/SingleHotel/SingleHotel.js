@@ -12,8 +12,7 @@ export const SingleHotel = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get(`https://travel-app-backend-uyij.onrender.com/api/hotels/${id}`);
-        setSingleHotel(data);
+   const { data } = await axios.get(`https://travel-app-backend-uyij.onrender.com/api/hotels/${id}`);        setSingleHotel(data);
         console.log(data);
       } catch (err) {
         console.error("Error fetching hotel:", err);

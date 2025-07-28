@@ -20,7 +20,7 @@
   gap: 1rem;
 
   /* Move slightly up */
-  transform: translateY(-200px);  /* 👈 shifts the box 50px upwards */
+  transform: translateY(-220px);  /* 👈 shifts the box 50px upwards */
 }
 .search-dest {
   font-size: 0.875rem;
@@ -62,7 +62,7 @@
   border-radius: 4px;
   top: 10rem;
   left: 12%;
-  /* transform: translate(-50%,0); */
+  transform: translate(15%,0);
 }
 
 
