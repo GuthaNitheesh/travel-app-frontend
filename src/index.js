@@ -1,15 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { CategoryProvider } from './context/category-context';
+
 import App from './App';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { DateProvider, CategoryProvider, FilterProvider, AuthProvider, WishlistProvider ,AlertProvider} from './context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
   <React.StrictMode>
-    <CategoryProvider>
-<App />
-    </CategoryProvider>
-    
+    <Router>
+      <CategoryProvider>
+        <DateProvider>
+          <FilterProvider>
+            <AuthProvider>
+              <WishlistProvider>
+                <AlertProvider>
+                  <App />
+                </AlertProvider>
+
+              </WishlistProvider>
+
+            </AuthProvider>
+
+          </FilterProvider>
+
+        </DateProvider>
+
+      </CategoryProvider>
+    </Router>
+
+
   </React.StrictMode>
 );
 
