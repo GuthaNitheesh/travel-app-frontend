@@ -76,15 +76,38 @@ export const AuthSignup = () => {
         }
     }
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        if (isEmailValid && isConfirmPasswordValid && isNameValid && isNumberValid && isPasswordValid) {
-            signupHandler(username, number, email, password);
-        }
-        authDispatch({
-            type:"CLEAR_USER_DATA"
-        })
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+
+  if (
+    isEmailValid &&
+    isConfirmPasswordValid &&
+    isNameValid &&
+    isNumberValid &&
+    isPasswordValid
+  ) {
+    try {
+      // ✅ Wait for signup to finish
+      await signupHandler(username, number, email, password);
+
+      // ✅ Switch to login tab after signup
+          alert("Signup successful! Please login.");
+      authDispatch({
+        type: "SET_TO_LOGIN"
+      });
+
+      // ✅ Clear form fields
+      authDispatch({
+        type: "CLEAR_USER_DATA"
+      });
+
+    } catch (error) {
+      console.error("Signup failed:", error);
     }
+  }
+};
+
+
     return (
         <div className="auth-container">
             <form onSubmit={handleFormSubmit}>
