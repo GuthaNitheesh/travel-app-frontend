@@ -34,13 +34,19 @@ export const AuthLogin=()=>{
                 console.log("INvalid Password");
             }
         }
-
 const handleFormSubmit = async (e) => {
   e.preventDefault();
 
-  if (isNumberValid && isPasswordValid) {
+  // Revalidate inputs on submit to avoid relying only on onChange
+  const isNumValid = validateNumber(number);
+  const isPassValid = validatePassword(password);
+
+  if (isNumValid && isPassValid) {
     try {
       const { accessToken, username } = await loginHandler(number, password);
+      if (!accessToken || !username) {
+        throw new Error("Missing credentials");
+      }
 
       authDispatch({ type: "SET_ACCESS_TOKEN", payload: accessToken });
       authDispatch({ type: "SET_USER_NAME", payload: username });
@@ -48,11 +54,11 @@ const handleFormSubmit = async (e) => {
       authDispatch({ type: "SHOW_AUTH_MODAL" });
       navigate("/");
     } catch (error) {
-      alert("Invalid credentials"); // ✅ This will now run on login failure
+      alert("Invalid credentials");
       console.error("Login failed:", error);
     }
   } else {
-    alert("Please enter valid number and password.");
+    alert("Please enter a valid mobile number and password.");
   }
 };
 
