@@ -1,119 +1,136 @@
 import "./Auth.css";
 import { useNavigate } from "react-router-dom";
-import { validateNumber,validatePassword } from "../../utils";
+import { validateNumber, validatePassword } from "../../utils";
 import { useAuth } from "../../context";
-import {loginHandler} from "../../services";
-let isNumberValid,isPasswordValid;
-export const AuthLogin=()=>{
-    const navigate=useNavigate();
-  const {authDispatch,number,password}=useAuth();
+import { loginHandler } from "../../services";
+
+export const AuthLogin = () => {
+  const navigate = useNavigate();
+  const { authDispatch, number, password } = useAuth();
 
   const handleNumberChange = (e) => {
-        isNumberValid = validateNumber(e.target.value);
-        if (isNumberValid) {
-            authDispatch({
-                type: "NUMBER",
-                payload: e.target.value
-            })
-        } else {
-            console.log("INVALID NUMBER");
-        }
+    const value = e.target.value;
+    const isNumberValid = validateNumber(value);
 
+    if (isNumberValid || value === "") {
+      authDispatch({
+        type: "NUMBER",
+        payload: value
+      });
+    } else {
+      console.log("Invalid Number");
     }
+  };
 
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    const isPasswordValid = validatePassword(value);
 
-     const handlePasswordChange = (e) => {
-            isPasswordValid = validatePassword(e.target.value);
-            if (isPasswordValid) {
-                console.log("valid password")
-                authDispatch({
-                    type: "PASSWORD",
-                    payload: e.target.value
-                })
-            } else {
-                console.log("INvalid Password");
-            }
+    if (isPasswordValid || value === "") {
+      authDispatch({
+        type: "PASSWORD",
+        payload: value
+      });
+    } else {
+      console.log("Invalid Password");
+    }
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const isNumValid = validateNumber(number);
+    const isPassValid = validatePassword(password);
+
+    if (isNumValid && isPassValid) {
+      try {
+        const { accessToken, username } = await loginHandler(number, password);
+
+        if (!accessToken || !username) {
+          throw new Error("Missing credentials");
         }
-const handleFormSubmit = async (e) => {
-  e.preventDefault();
 
-  // Revalidate inputs on submit to avoid relying only on onChange
-  const isNumValid = validateNumber(number);
-  const isPassValid = validatePassword(password);
+        authDispatch({ type: "SET_ACCESS_TOKEN", payload: accessToken });
+        authDispatch({ type: "SET_USER_NAME", payload: username });
+        authDispatch({ type: "CLEAR_USER_DATA" });
+        authDispatch({ type: "SHOW_AUTH_MODAL" });
 
-  if (isNumValid && isPassValid) {
-    try {
-      const { accessToken, username } = await loginHandler(number, password);
-      if (!accessToken || !username) {
-        throw new Error("Missing credentials");
+        navigate("/");
+      } catch (error) {
+        alert("Invalid credentials. Please try again.");
+        console.error("Login failed:", error);
       }
+    } else {
+      alert("Please enter a valid 10-digit number and password.");
+    }
+  };
+
+  const handleTestCredentialsClick = async () => {
+    const testNumber = "9999999999";
+    const testPassword = "Test@123";
+
+    try {
+      const { accessToken, username } = await loginHandler(testNumber, testPassword);
 
       authDispatch({ type: "SET_ACCESS_TOKEN", payload: accessToken });
       authDispatch({ type: "SET_USER_NAME", payload: username });
       authDispatch({ type: "CLEAR_USER_DATA" });
       authDispatch({ type: "SHOW_AUTH_MODAL" });
+
       navigate("/");
     } catch (error) {
-      alert("Invalid credentials");
-      console.error("Login failed:", error);
+      alert("Test login failed. Please check the test credentials.");
+      console.error("Test Login Error:", error);
     }
-  } else {
-    alert("Please enter a valid mobile number and password.");
-  }
-};
+  };
 
-
-
-
-
-
-
-
-
-
-
-const handleTestCredentialsClick=async()=>{
-  const {accessToken,username}=await loginHandler(number,password);
-  authDispatch({
-            type:"SET_ACCESS_TOKEN",
-            payload:accessToken
-           })
-            authDispatch({
-            type:"SET_USER_NAME",
-            payload:username
-           })
-            authDispatch({
-            type:"CLEAR_USER_DATA"
-        })
-        authDispatch({
-            type:"SHOW_AUTH_MODAL"
-        })
-}
-
-
-
-
-   return(
-    <div className="auth-container"> 
-        <form onSubmit={handleFormSubmit}>
-            <div className="d-flex direction-column lb-in-container">
-                <label className="auth-label">Mobile Number<span className="asterisk">*</span></label>
-                <input defaultValue={number} type="number" className="auth-input" placeholder="Enter Mobile Number" maxLength="10"  required
-                onChange={handleNumberChange}/> 
-            </div>
-            <div className="d-flex direction-column lb-in-container">
-                <label className="auth-label">Password<span className="asterisk">*</span></label>
-                <input defaultValue={password} type="password" className="auth-input" placeholder="Enter Password" required
-                onChange={handlePasswordChange}/> 
-            </div>
-            <div>
-                <button className="button btn-primary btn-login cursor">Login</button>
-            </div>
-        </form>
-        <div className="cta" >
-            <button className="button btn-outline-primary cursor-pointer" onClick={handleTestCredentialsClick}
-            >Login with Test Credentials</button>
+  return (
+    <div className="auth-container">
+      <form onSubmit={handleFormSubmit}>
+        <div className="d-flex direction-column lb-in-container">
+          <label className="auth-label">
+            Mobile Number<span className="asterisk">*</span>
+          </label>
+          <input
+            value={number}
+            type="text"
+            className="auth-input"
+            placeholder="Enter Mobile Number"
+            maxLength="10"
+            required
+            onChange={handleNumberChange}
+          />
         </div>
+
+        <div className="d-flex direction-column lb-in-container">
+          <label className="auth-label">
+            Password<span className="asterisk">*</span>
+          </label>
+          <input
+            value={password}
+            type="password"
+            className="auth-input"
+            placeholder="Enter Password"
+            required
+            onChange={handlePasswordChange}
+          />
+        </div>
+
+        <div>
+          <button type="submit" className="button btn-primary btn-login cursor">
+            Login
+          </button>
+        </div>
+      </form>
+
+      <div className="cta">
+        <button
+          className="button btn-outline-primary cursor-pointer"
+          onClick={handleTestCredentialsClick}
+        >
+          Login with Test Credentials
+        </button>
+      </div>
     </div>
-   )
-}
+  );
+};
