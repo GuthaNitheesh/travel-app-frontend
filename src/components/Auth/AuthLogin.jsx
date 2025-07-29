@@ -36,28 +36,33 @@ export const AuthLogin=()=>{
         }
 
 
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  if (isNumberValid && isPasswordValid) {
+    try {
+      const { accessToken, username } = await loginHandler(number, password);
+      if (!accessToken || !username) {
+        alert("Invalid Credentials");
+        return;
+      }
 
-        const handleFormSubmit=async(e)=>{
-        e.preventDefault();
-        if(isNumberValid&&isPasswordValid){
-           const {accessToken,username} =await  loginHandler(number,password);
-           authDispatch({
-            type:"SET_ACCESS_TOKEN",
-            payload:accessToken
-           })
-            authDispatch({
-            type:"SET_USER_NAME",
-            payload:username
-           })
-           navigate("/");
-        }
-        authDispatch({
-            type:"CLEAR_USER_DATA"
-        })
-        authDispatch({
-            type:"SHOW_AUTH_MODAL"
-        })
-        }
+      authDispatch({
+        type: "SET_ACCESS_TOKEN",
+        payload: accessToken
+      });
+      authDispatch({
+        type: "SET_USER_NAME",
+        payload: username
+      });
+      authDispatch({ type: "CLEAR_USER_DATA" });
+      authDispatch({ type: "SHOW_AUTH_MODAL" });
+      navigate("/");
+    } catch (error) {
+      alert("Invalid Credentials"); // <-- Show alert on error
+      console.error("Login failed:", error);
+    }
+  }
+};
 
 
 
