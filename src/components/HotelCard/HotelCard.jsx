@@ -59,7 +59,10 @@ export const HotelCard = ({ hotel }) => {
         </div>
       </div>
       <button className="button btn-wishlist absolute d-flex align-center" onClick={handleWishlistClick}>
-        <span className="material-icons favorite cursor">favorite</span>
+        <span className={`material-icons favorite cursor ${isHotelInWishlist ? "fav-selected" : ""}`}>
+          favorite
+        </span>
+
       </button>
     </div>
   );
