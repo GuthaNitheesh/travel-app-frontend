@@ -17,7 +17,7 @@ export const HotelCard = ({ hotel }) => {
       if (!isHotelInWishlist) {
 
         wishlistDispatch({
-          type: "AD_TO_WISHLIST",
+          type: "ADD_TO_WISHLIST",
           payload: hotel
         })
         navigate("/wishlist")
