@@ -16,7 +16,7 @@ export const HotelCard = ({ hotel }) => {
   };
 
   const handleWishlistClick = (e) => {
-    e.stopPropagation(); // ✅ Prevent click bubbling to card
+    e.stopPropagation();
 
     if (accessToken) {
       if (!isHotelInWishlist) {
@@ -25,7 +25,7 @@ export const HotelCard = ({ hotel }) => {
           payload: hotel,
         });
 
-        // ✅ Only navigate if NOT on wishlist page
+        // ✅ Navigate ONLY if NOT on wishlist page
         if (location.pathname !== "/wishlist") {
           setTimeout(() => {
             navigate("/wishlist");
@@ -36,6 +36,8 @@ export const HotelCard = ({ hotel }) => {
           type: "REMOVE_FROM_WISHLIST",
           payload: _id,
         });
+
+        // ✅ Stay on wishlist page — DO NOT navigate
       }
     } else {
       authDispatch({
@@ -46,7 +48,6 @@ export const HotelCard = ({ hotel }) => {
 
   return (
     <div className="relative hotelcard-container shadow cursor-pointer">
-      {/* 🛠️ MOVE this click ONLY on content, NOT whole card */}
       <div className="card-content" onClick={handleHotelCardClick}>
         <img className="img" src={image} alt={name} />
         <div className="hotelcard-details">
@@ -65,13 +66,14 @@ export const HotelCard = ({ hotel }) => {
         </div>
       </div>
 
-      {/* ✅ Wishlist Button OUTSIDE the card click */}
       <button
         className="button btn-wishlist absolute d-flex align-center"
         onClick={handleWishlistClick}
       >
         <span
-          className={`material-icons favorite cursor ${isHotelInWishlist ? "fav-selected" : ""}`}
+          className={`material-icons favorite cursor ${
+            isHotelInWishlist ? "fav-selected" : ""
+          }`}
         >
           favorite
         </span>
