@@ -55,3 +55,8 @@
 .fav-selected {
   color: red;
 }
+
+
+.fav-selected {
+  color: red !important;
+}

@@ -12,6 +12,9 @@ export const HotelCard = ({ hotel }) => {
   const handleHotelCardCLick = () => {
     navigate(`/hotels/${name}/${address}-${state}/${_id}`)
   }
+  console.log("wishlist:", wishlist);
+console.log("isHotelInWishlist:", isHotelInWishlist);
+
  const handleWishlistClick = () => {
   if (accessToken) {
     if (!isHotelInWishlist) {
