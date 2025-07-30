@@ -16,7 +16,9 @@ export const HotelCard = ({ hotel }) => {
   console.log("wishlist:", wishlist);
 console.log("isHotelInWishlist:", isHotelInWishlist);
 
- const handleWishlistClick = () => {
+const handleWishlistClick = (e) => {
+  e.stopPropagation(); // 🛑 Prevent click from bubbling to parent div
+
   if (accessToken) {
     if (!isHotelInWishlist) {
       wishlistDispatch({
