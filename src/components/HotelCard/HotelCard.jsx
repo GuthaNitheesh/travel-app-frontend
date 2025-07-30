@@ -12,33 +12,38 @@ export const HotelCard = ({ hotel }) => {
   const handleHotelCardCLick = () => {
     navigate(`/hotels/${name}/${address}-${state}/${_id}`)
   }
-  const handleWishlistClick = () => {
-    if (accessToken) {
-     if (!isHotelInWishlist) {
-  wishlistDispatch({
-    type: "ADD_TO_WISHLIST",
-    payload: hotel
-  });
+ const handleWishlistClick = () => {
+  if (accessToken) {
+    if (!isHotelInWishlist) {
+      wishlistDispatch({
+        type: "ADD_TO_WISHLIST",
+        payload: hotel
+      });
 
-  // Wait a bit to let the re-render happen before navigation
-  setTimeout(() => {
-    navigate("/wishlist");
-  }, 100); // 100ms delay
-}
-
-      else {
-        wishlistDispatch({
-          type: "REMOVE_FROM_WISHLIST",
-          payload: _id
-        })
-      }
+      // Delay navigation slightly to allow color update
+      setTimeout(() => {
+        navigate("/wishlist");
+      }, 300); // Delay slightly more
     } else {
-      authDispatch({
-        type: "SHOW_AUTH_MODAL"
-      })
-    }
+      wishlistDispatch({
+        type: "REMOVE_FROM_WISHLIST",
+        payload: _id
+      });
 
+      // If user is on wishlist page, navigate them back
+      if (window.location.pathname === "/wishlist") {
+        setTimeout(() => {
+          navigate("/");
+        }, 300);
+      }
+    }
+  } else {
+    authDispatch({
+      type: "SHOW_AUTH_MODAL"
+    });
   }
+};
+
   return (
     <div className="relative hotelcard-container shadow cursor-pointer">
       <div onClick={handleHotelCardCLick}>
