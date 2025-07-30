@@ -14,14 +14,18 @@ export const HotelCard = ({ hotel }) => {
   }
   const handleWishlistClick = () => {
     if (accessToken) {
-      if (!isHotelInWishlist) {
+     if (!isHotelInWishlist) {
+  wishlistDispatch({
+    type: "ADD_TO_WISHLIST",
+    payload: hotel
+  });
 
-        wishlistDispatch({
-          type: "ADD_TO_WISHLIST",
-          payload: hotel
-        })
-        navigate("/wishlist")
-      }
+  // Wait a bit to let the re-render happen before navigation
+  setTimeout(() => {
+    navigate("/wishlist");
+  }, 100); // 100ms delay
+}
+
       else {
         wishlistDispatch({
           type: "REMOVE_FROM_WISHLIST",
