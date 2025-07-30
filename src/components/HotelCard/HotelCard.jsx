@@ -17,7 +17,7 @@ export const HotelCard = ({ hotel }) => {
 console.log("isHotelInWishlist:", isHotelInWishlist);
 
 const handleWishlistClick = (e) => {
-  e.stopPropagation(); // 🛑 Prevent click from bubbling to parent div
+  e.stopPropagation();
 
   if (accessToken) {
     if (!isHotelInWishlist) {
@@ -26,18 +26,20 @@ const handleWishlistClick = (e) => {
         payload: hotel
       });
 
-      // ✅ Only navigate to wishlist if not already there
+      // Only navigate if not already on wishlist page
       if (location.pathname !== "/wishlist") {
         setTimeout(() => {
           navigate("/wishlist");
         }, 300);
       }
-
     } else {
       wishlistDispatch({
         type: "REMOVE_FROM_WISHLIST",
         payload: _id
       });
+
+      // ❌ Don’t navigate here — let the UI update on its own
+      // You can optionally add logic to show empty wishlist message
     }
   } else {
     authDispatch({
