@@ -2,9 +2,10 @@ import "./HotelCard.css";
 import { useNavigate } from "react-router-dom";
 import { useWishlist, useAuth } from "../../context";
 import { findHotelInWishlist } from "../../utils";
-
+import { useLocation } from "react-router-dom"; 
 export const HotelCard = ({ hotel }) => {
   const { _id, name, image, address, state, rating, price } = hotel;
+  const location = useLocation(); 
   const { wishlistDispatch, wishlist } = useWishlist();
   const { accessToken, authDispatch } = useAuth();
   const isHotelInWishlist = findHotelInWishlist(wishlist, _id);
@@ -23,18 +24,18 @@ console.log("isHotelInWishlist:", isHotelInWishlist);
         payload: hotel
       });
 
-      // Delay navigation slightly to allow color update
-      setTimeout(() => {
-        navigate("/wishlist");
-      }, 300); // Delay slightly more
+      // ✅ Only navigate to wishlist if not already there
+      if (location.pathname !== "/wishlist") {
+        setTimeout(() => {
+          navigate("/wishlist");
+        }, 300);
+      }
+
     } else {
       wishlistDispatch({
         type: "REMOVE_FROM_WISHLIST",
         payload: _id
       });
-
-      // If user is on wishlist page, navigate them back
-      
     }
   } else {
     authDispatch({
