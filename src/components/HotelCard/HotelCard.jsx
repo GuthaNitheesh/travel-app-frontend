@@ -34,11 +34,7 @@ console.log("isHotelInWishlist:", isHotelInWishlist);
       });
 
       // If user is on wishlist page, navigate them back
-      if (window.location.pathname === "/wishlist") {
-        setTimeout(() => {
-          navigate("/");
-        }, 300);
-      }
+      
     }
   } else {
     authDispatch({
